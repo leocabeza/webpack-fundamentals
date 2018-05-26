@@ -1,7 +1,18 @@
 const commonPaths = require('./common-paths');
 
 const config = {
-  devtool: 'source-map'
+  devtool: 'eval-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  }
 };
 
 module.exports = config;

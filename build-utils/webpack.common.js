@@ -7,7 +7,7 @@ const config = {
   entry: './src/',
   output: {
     path: commonPaths.outputPath,
-    filename: '[chunkhash].bundle.js'
+    filename: '[hash].bundle.js'
   },
   module: {
     rules: [
