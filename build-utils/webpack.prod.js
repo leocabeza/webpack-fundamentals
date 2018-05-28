@@ -1,14 +1,26 @@
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin');
+
+const normalCss = new ExtractTextWebpackPlugin('styles.css');
+const criticalCss = new ExtractTextWebpackPlugin('critical.css');
 
 const config = {
   devtool: 'source-map',
   module: {
     rules: [
       {
+        test: /critical\.css$/,
+        use: criticalCss.extract({
+          use: 'css-loader',
+          fallback: 'style-loader'
+        })
+      },
+      {
         test: /\.css$/,
-        use: ExtractTextWebpackPlugin.extract({
+        exclude: /critical\.css$/,
+        use: normalCss.extract({
           use: 'css-loader',
           fallback: 'style-loader'
         })
@@ -16,7 +28,9 @@ const config = {
     ]
   },
   plugins: [
-    new ExtractTextWebpackPlugin('styles.css'),
+    criticalCss,
+    normalCss,
+    new StyleExtHtmlWebpackPlugin('critical.css'),
     new UglifyWebpackPlugin({
       sourceMap: true
     }),
